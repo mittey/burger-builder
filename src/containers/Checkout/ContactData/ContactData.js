@@ -93,8 +93,7 @@ class ContactData extends Component {
         value: "fastest"
       }
     },
-    formIsValid: false,
-    loading: false
+    formIsValid: false
   };
 
   orderHandler = event => {
@@ -184,7 +183,7 @@ class ContactData extends Component {
       </form>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
 
@@ -200,13 +199,14 @@ class ContactData extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    totalPrice: state.totalPrice
+    totalPrice: state.totalPrice,
+    laoding: state.loading
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onOrderBurger: orderData => dispatch(actions.purchaseBurgerStart(orderData))
+    onOrderBurger: orderData => dispatch(actions.purchaseBurger(orderData))
   };
 };
 
