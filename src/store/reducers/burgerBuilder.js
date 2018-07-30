@@ -1,4 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
+import produce from "immer";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -13,50 +14,41 @@ const initialState = {
   error: false
 };
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case actionTypes.ADD_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-        },
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-      };
+const reducer = (state = initialState, action) =>
+  produce(state, draft => {
+    switch (action.type) {
+      case actionTypes.ADD_INGREDIENTS:
+        draft.ingredients[action.ingredientName] =
+          state.ingredients[action.ingredientName] + 1;
+        draft.totalPrice =
+          state.totalPrice + INGREDIENT_PRICES[action.ingredientName];
+        break;
 
-    case actionTypes.REMOVE_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-        },
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
-      };
+      case actionTypes.REMOVE_INGREDIENTS:
+        draft.ingredients[action.ingredientName] =
+          state.ingredients[action.ingredientName] - 1;
+        draft.totalPrice =
+          state.totalPrice - INGREDIENT_PRICES[action.ingredientName];
+        break;
 
-    case actionTypes.SET_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
+      case actionTypes.SET_INGREDIENTS:
+        draft.ingredients = {
           salad: action.ingredients.salad,
           bacon: action.ingredients.bacon,
           cheese: action.ingredients.cheese,
           meat: action.ingredients.meat
-        },
-        error: false,
-        totalPrice: 4
-      };
+        };
+        draft.error = false;
+        draft.totalPrice = 4;
+        break;
 
-    case actionTypes.FETCH_INGREDIENTS_FAILED:
-      return {
-        ...state,
-        error: true
-      };
+      case actionTypes.FETCH_INGREDIENTS_FAILED:
+        draft.error = true;
+        break;
 
-    default:
-      return state;
-  }
-};
+      default:
+        break;
+    }
+  });
 
 export default reducer;
