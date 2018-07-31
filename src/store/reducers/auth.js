@@ -29,6 +29,11 @@ const reducer = (state = initialState, action) =>
         draft.loading = false;
         break;
 
+      case actionTypes.AUTH_LOGOUT:
+        draft.token = null;
+        draft.userId = null;
+        break;
+
       default:
         break;
     }
