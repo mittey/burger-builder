@@ -28,15 +28,18 @@ export const logout = () => {
   // localStorage.removeItem("expirationDate");
   // localStorage.removeItem("userId");
 
-  return {
-    type: actionTypes.AUTH_INITIATE_LOGOUT
-  };
+  return { type: actionTypes.AUTH_INITIATE_LOGOUT };
 };
 
-export const checkAuthTimeout = expirationTime => dispatch => {
-  setTimeout(() => {
-    dispatch(logout());
-  }, expirationTime * 1000);
+export const logoutSucceed = () => {
+  return { type: actionTypes.AUTH_LOGOUT };
+};
+
+export const checkAuthTimeout = expirationTime => {
+  return {
+    type: actionTypes.AUTH_CHECK_TIMEOUT,
+    expirationTime: expirationTime
+  };
 };
 
 export const auth = (email, password, isSignup) => dispatch => {
